@@ -22,7 +22,10 @@ export const fetchGeonameData = createAsyncThunk(
       
 
       if (arg.searchTerm && arg.searchTerm!.length > 0) {
-        apiURI = apiURI.replace("?", `?where=name%20like%20%22${arg.searchTerm}%22&`)
+        apiURI = apiURI.replace(
+          "?",
+          `?where=ascii_name%20like%20%22${arg.searchTerm}%22&`
+        )
       }
 
       console.log(apiURI);

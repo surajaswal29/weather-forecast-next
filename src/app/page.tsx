@@ -26,7 +26,6 @@ const Home = () => {
 
   return (
     <div className='w-full'>
-      <Navbar theme='light' />
       <div className='w-full px-36 py-10'>
         {/* <div className='w-full flex justify-between mt-20'>
           <div className='w-full flex gap-6 border-b'>

@@ -5,6 +5,8 @@ export interface LayoutProps {
 export interface GeonameType {
     loading: boolean;
     citiesData: any[];
+    totalMergeCount: number;
+    mergeCitiesData: any[];
     error: null | string;
     currentPage: number;
     totalItems: number;
@@ -34,3 +36,16 @@ export interface GeonamePayload {
 //         lat: number;
 //     };
 // }
+
+export type WeatherActionType = {
+    lat: number;
+    lng: number;
+}
+
+export interface WeatherSliceType {
+    loading:boolean
+    currentWeather: null | object
+    foreCastWeather: any[]
+    foreCastError:null | string
+    error:null | string
+}

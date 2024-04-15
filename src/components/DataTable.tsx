@@ -5,11 +5,12 @@ import {
   flexRender,
 } from "@tanstack/react-table"
 
-import { Clock, Edit, X } from "lucide-react"
+import { Clock, Edit, ExternalLink, X } from "lucide-react"
 import Modal from "./Modal"
 import { useAppDispatch, useAppSelector } from "@/hooks/useTypedRedux"
 import { fetchGeonameData } from "@/redux/actions/geonameAction"
 import Link from "next/link"
+import { setCitiesData } from "@/redux/reducers/geonameSlice"
 
 const TIMEZONES = [
   "Europe/Paris",
@@ -32,11 +33,12 @@ const TIMEZONES = [
 
 
 const DataTable = () => {
-  const [cityData, setCityData] = React.useState<any[]>([])
+  // const [cityData, setCityData] = React.useState<any[]>([])
   const dispatch = useAppDispatch()
   const {
     loading,
     citiesData,
+    mergeCitiesData,
     error,
     currentPage,
     totalItems,
@@ -46,12 +48,28 @@ const DataTable = () => {
 
   const columns = [
     {
-      accessorKey: "name",
+      accessorKey: "ascii_name",
       header: "City Name",
       size: 200,
       cell: (props: any) => {
-        return <Link href={`/weather/${props.getValue()}`}>{props.getValue()}</Link>
-       }
+        console.log(props.row);
+        const { coordinates } = props.row.original
+        const latitude = coordinates ? coordinates.lat : null
+        const longitude = coordinates ? coordinates.lon : null
+
+        console.log(coordinates)
+        return (
+          <Link
+            href={`/weather/${props.getValue()}?lat=${latitude}&lng=${longitude}`}
+            className='flex items-center gap-1 hover:text-blue-500 hover:underline'
+            target='_blank'
+            rel='noreferrer'
+          >
+            {props.getValue()}
+            <ExternalLink size={16} />
+          </Link>
+        )
+      },
     },
     {
       accessorKey: "cou_name_en",
@@ -108,8 +126,6 @@ const DataTable = () => {
           searchTerm: "",
         })
       )
-
-    setCityData(citiesData)
   }
 
   // filter timezone
@@ -118,9 +134,7 @@ const DataTable = () => {
     const { value } = e.target
 
     setFilterTimeZone(value)
-    setCityData([])
-
-    console.log(cityData)
+    dispatch(setCitiesData([]))
 
     dispatch(
       fetchGeonameData({
@@ -132,13 +146,10 @@ const DataTable = () => {
     )
 
     console.log("only i am calling");
-    console.log(cityData);
-
-    setCityData(citiesData)
   }
 
   const table = useReactTable({
-    data: cityData.length > 0 ? cityData : citiesData,
+    data: mergeCitiesData,
     columns,
     getCoreRowModel: getCoreRowModel(),
   })
@@ -152,10 +163,11 @@ const DataTable = () => {
           timezone: timeZone,
         }
         dispatch(fetchGeonameData(nextArg))
+        // dispatch(setCitiesData([...mergeCitiesData, ...citiesData]))
 
-        console.log("I've been called");
+        console.log("I've been called");  
 
-        setCityData((prev) => [...prev, ...citiesData])
+        // setCityData((prev) => [...prev, ...citiesData])
       }
     }
     // Add event listener for scroll
@@ -168,7 +180,6 @@ const DataTable = () => {
   }, [citiesData, currentPage, dispatch])
 
   useEffect(() => {
-    console.log("called in 162");
     const initArg = {
       page: 1,
       limit: 20,
@@ -176,11 +187,12 @@ const DataTable = () => {
       searchTerm: "",
     }
     dispatch(fetchGeonameData(initArg))
-  }, [dispatch])
+  }, [])
 
   useEffect(() => {
-    console.log(JSON.stringify(cityData))
-  }, [cityData])
+    console.log(mergeCitiesData)
+    // dispatch(setCitiesData([...mergeCitiesData, ...citiesData]))
+  }, [mergeCitiesData])
 
   return (
     <>
@@ -194,6 +206,7 @@ const DataTable = () => {
             className='border border-blue-300 p-2 h-10 rounded-md w-[300px]'
             value={searchData}
             onChange={handleSearch}
+            placeholder="Type full city name.."
           />
         </div>
         <div className='flex flex-col gap-2'>
@@ -275,8 +288,11 @@ const DataTable = () => {
       </div>
       <div className='w-full'>
         {loading && (
-          <div className='flex justify-center items-center py-4'>
-            <span className='animate-spin w-8 h-8 border-t-4 border-b-4 border-red-600 rounded-full'></span>
+          <div className='grid grid-cols-4 gap-2 bg-white p-2 rounded-md'>
+            <div className='bg-gray-200 animate-pulse p-6'></div>
+            <div className='bg-gray-200 animate-pulse p-6'></div>
+            <div className='bg-gray-200 animate-pulse p-6'></div>
+            <div className='bg-gray-200 animate-pulse p-6'></div>
           </div>
         )}
       </div>

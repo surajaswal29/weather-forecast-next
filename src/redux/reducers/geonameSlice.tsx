@@ -5,10 +5,12 @@ import { GeonamePayload, GeonameType } from "@/utils/types"
 const initialState = {
   loading: false,
   citiesData: [],
+  totalMergeCount: 0,
+  mergeCitiesData: [],
   error: null,
   currentPage: 1,
   totalItems: 0,
-  timeZone: "Asia/Kolkata",
+  timeZone: "",
   pageLimit: 20,
   searchTerm: "",
 } as GeonameType
@@ -16,7 +18,13 @@ const initialState = {
 const citiesSlice = createSlice({
   name: "cities",
   initialState,
-  reducers: {},
+  reducers: {
+    setCitiesData: (state, action) => {
+      console.log(action.payload)
+      state.totalMergeCount = action.payload.length
+      state.mergeCitiesData = action.payload
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchGeonameData.pending, (state) => {
       state.loading = true
@@ -26,11 +34,15 @@ const citiesSlice = createSlice({
       (state, action: PayloadAction<GeonamePayload>) => {
         state.loading = false
         state.citiesData = action.payload?.data
+        state.totalMergeCount = state.mergeCitiesData.length
+        state.mergeCitiesData = state.searchTerm
+          ? action.payload?.data
+          : [...state.mergeCitiesData, ...action.payload?.data]
         state.totalItems = action.payload?.totalItems
         state.timeZone = action.payload?.timezone
         state.pageLimit = action.payload?.pageLimit
-          state.currentPage = action.payload?.currentPage
-          state.searchTerm = action.payload?.searchTerm
+        state.currentPage = action.payload?.currentPage
+        state.searchTerm = action.payload?.searchTerm
         state.error = null
       }
     )
@@ -42,5 +54,5 @@ const citiesSlice = createSlice({
   },
 })
 
-// export const { setCitiesData } = citiesSlice.actions
+export const { setCitiesData } = citiesSlice.actions
 export default citiesSlice.reducer
