@@ -44,7 +44,7 @@ export type WeatherActionType = {
 
 export interface WeatherSliceType {
     loading:boolean
-    currentWeather: null | object
+    currentWeather: null | any
     foreCastWeather: any[]
     foreCastError:null | string
     error:null | string
