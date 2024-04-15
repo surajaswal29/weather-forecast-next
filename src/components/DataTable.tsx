@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-table"
 
 import { Clock, Edit, ExternalLink, X } from "lucide-react"
-import Modal from "./Modal"
+// import Modal from "./Modal"
 import { useAppDispatch, useAppSelector } from "@/hooks/useTypedRedux"
 import { fetchGeonameData } from "@/redux/actions/geonameAction"
 import Link from "next/link"
