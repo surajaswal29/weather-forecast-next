@@ -25,7 +25,3 @@ This project is a Weather Forecast Web Application built using `React`, `TypeScr
 - **tanstack/react-table:** A lightweight and extensible table component for React.
 - **Lucide Icons:** A set of beautiful open-source icons.
 
-## Installation
-
-1. Clone the repository:
-
