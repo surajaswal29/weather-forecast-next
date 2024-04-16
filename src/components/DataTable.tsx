@@ -189,14 +189,14 @@ const DataTable = () => {
     dispatch(fetchGeonameData(initArg))
   }, [])
 
-  useEffect(() => {
-    console.log(mergeCitiesData)
-    // dispatch(setCitiesData([...mergeCitiesData, ...citiesData]))
-  }, [mergeCitiesData])
+  // useEffect(() => {
+  //   console.log(mergeCitiesData)
+  //   // dispatch(setCitiesData([...mergeCitiesData, ...citiesData]))
+  // }, [mergeCitiesData])
 
   return (
     <>
-      <div className='w-full mt-6 flex items-center gap-3'>
+      <div className='w-full mt-6 flex flex-col md:flex-row items-center gap-3'>
         <div className='flex flex-col gap-2 '>
           <label htmlFor='search'>Search by city name</label>
           <input
@@ -227,7 +227,7 @@ const DataTable = () => {
           </select>
         </div>
       </div>
-      <div className='rounded-md border-x border-slate-300 overflow-hidden mt-6'>
+      <div className='w-full rounded-md border-x border-slate-300 overflow-auto mt-6'>
         <table className='w-full border-0 border-collapse bg-white'>
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (

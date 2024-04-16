@@ -125,7 +125,9 @@ const CityPage: React.FC<Props> = ({ params }) => {
     return directions[index]
   }
 
-  if (loading) return <div>Loading...</div>
+  if (loading || !foreCastWeather) {
+    return <div>Loading...</div>
+  }
   return (
     <div className='w-full px-4 md:px-12 lg:px-16 xl:px-24'>
       {/* <div className='w-full my-6'>
