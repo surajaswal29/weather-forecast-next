@@ -15,6 +15,21 @@ const initialState = {
   searchTerm: "",
 } as GeonameType
 
+const removeDuplicate = (arr: any[]) => {
+  console.log(arr)
+  let uniqueIds = new Set()
+  let uniqueArr = []
+  for (let i = 0; i < arr.length; i++) { 
+    if (!uniqueIds.has(arr[i].geoname_id)) {
+      uniqueIds.add(arr[i].geoname_id)
+      uniqueArr.push(arr[i])
+    }
+  }
+  console.log(uniqueArr);
+
+  return uniqueArr
+}
+
 const citiesSlice = createSlice({
   name: "cities",
   initialState,
@@ -32,12 +47,13 @@ const citiesSlice = createSlice({
     builder.addCase(
       fetchGeonameData.fulfilled.type,
       (state, action: PayloadAction<GeonamePayload>) => {
+        
         state.loading = false
         state.citiesData = action.payload?.data
         state.totalMergeCount = state.mergeCitiesData.length
         state.mergeCitiesData = state.searchTerm
-          ? action.payload?.data
-          : [...state.mergeCitiesData, ...action.payload?.data]
+          ? removeDuplicate(action.payload?.data)
+          : removeDuplicate([...state.mergeCitiesData, ...action.payload?.data])
         state.totalItems = action.payload?.totalItems
         state.timeZone = action.payload?.timezone
         state.pageLimit = action.payload?.pageLimit

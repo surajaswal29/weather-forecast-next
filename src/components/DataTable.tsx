@@ -3,9 +3,12 @@ import {
   useReactTable,
   getCoreRowModel,
   flexRender,
+  getSortedRowModel,
+  SortingState,
+  sortingFns,
 } from "@tanstack/react-table"
 
-import { Clock, Edit, ExternalLink, X } from "lucide-react"
+import { ArrowDown, ArrowUp, Clock, Edit, ExternalLink, X } from "lucide-react"
 // import Modal from "./Modal"
 import { useAppDispatch, useAppSelector } from "@/hooks/useTypedRedux"
 import { fetchGeonameData } from "@/redux/actions/geonameAction"
@@ -31,9 +34,10 @@ const TIMEZONES = [
   "Pacific/Auckland",
 ] as const
 
-
 const DataTable = () => {
   // const [cityData, setCityData] = React.useState<any[]>([])
+  const [sorting, setSorting] = React.useState<SortingState>([])
+
   const dispatch = useAppDispatch()
   const {
     loading,
@@ -52,7 +56,7 @@ const DataTable = () => {
       header: "City Name",
       size: 200,
       cell: (props: any) => {
-        console.log(props.row);
+        console.log(props.row)
         const { coordinates } = props.row.original
         const latitude = coordinates ? coordinates.lat : null
         const longitude = coordinates ? coordinates.lon : null
@@ -75,10 +79,12 @@ const DataTable = () => {
       accessorKey: "cou_name_en",
       header: "Country",
       size: 200,
+      enableSorting: false,
     },
     {
       accessorKey: "timezone",
       header: "Timezone",
+      enableSorting: false,
       cell: (props: any) => {
         return (
           <div
@@ -130,7 +136,7 @@ const DataTable = () => {
 
   // filter timezone
   const [filterTimeZone, setFilterTimeZone] = useState<string>("")
-  const handleFilterTimeZone = (e: React.ChangeEvent<HTMLSelectElement>) => { 
+  const handleFilterTimeZone = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target
 
     setFilterTimeZone(value)
@@ -145,13 +151,19 @@ const DataTable = () => {
       })
     )
 
-    console.log("only i am calling");
+    console.log("only i am calling")
   }
 
   const table = useReactTable({
     data: mergeCitiesData,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: setSorting,
+    state: {
+      sorting,
+    },
+    // getSortedRowModel:
   })
 
   useEffect(() => {
@@ -165,7 +177,7 @@ const DataTable = () => {
         dispatch(fetchGeonameData(nextArg))
         // dispatch(setCitiesData([...mergeCitiesData, ...citiesData]))
 
-        console.log("I've been called");  
+        console.log("I've been called")
 
         // setCityData((prev) => [...prev, ...citiesData])
       }
@@ -206,7 +218,7 @@ const DataTable = () => {
             className='border border-blue-300 p-2 h-10 rounded-md w-[300px]'
             value={searchData}
             onChange={handleSearch}
-            placeholder="Type full city name.."
+            placeholder='Type full city name..'
           />
         </div>
         <div className='flex flex-col gap-2'>
@@ -227,7 +239,10 @@ const DataTable = () => {
           </select>
         </div>
       </div>
-      <div className='w-full rounded-md border-x border-slate-300 overflow-auto mt-6'>
+      <p className='mt-6 mb-2 italic text-red-400 text-xs'>
+        Note: Click on column name for sorting
+      </p>
+      <div className='w-full rounded-md border-x border-slate-300 overflow-auto'>
         <table className='w-full border-0 border-collapse bg-white'>
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -244,12 +259,25 @@ const DataTable = () => {
                       width: header.getSize(),
                     }}
                   >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
+                    {header.isPlaceholder ? null : (
+                      <div
+                        className={
+                          header.column.getCanSort()
+                            ? "cursor-pointer select-none flex items-center gap-1"
+                            : "flex items-center gap-1"
+                        }
+                        onClick={header.column.getToggleSortingHandler()}
+                      >
+                        {flexRender(
                           header.column.columnDef.header,
                           header.getContext()
                         )}
+                        {{
+                          asc: <ArrowUp />,
+                          desc: <ArrowDown />,
+                        }[header.column.getIsSorted() as string] ?? null}
+                      </div>
+                    )}
                   </th>
                 ))}
               </tr>
