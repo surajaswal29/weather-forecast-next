@@ -3,7 +3,6 @@ import { Roboto } from "next/font/google"
 import "@/styles/globals.css"
 import StoreProvider from "./storeProvider"
 import Navbar from "@/components/Navbar"
-// import TaskDataProvider from "@/context/TaskDataContext"
 
 const roboto = Roboto({
   subsets: ["cyrillic"],
@@ -22,8 +21,10 @@ export default function RootLayout({
     <html lang='en'>
       <body className={`bg-slate-100 ${roboto.className}`}>
         <StoreProvider>
-          <Navbar theme='light' />
-          {children}
+          
+            <Navbar theme='light' />
+            {children}
+          
         </StoreProvider>
       </body>
     </html>
