@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Weather Forecast Web Application using **React**, **TypeScript**, **Next.js**, **Tailwind CSS**, **Redux**
 
-## Getting Started
+This project is a Weather Forecast Web Application built using `React`, `TypeScript`, `Next.js`, `Tailwind CSS`, `Redux`
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- ## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **City Table:** Browse a list of cities in `Infinite Scroll` way within a specific `timezone`, defaulting to `Asia/Kolkata`.
+- **City Search, Timezone Filter & Sorting:** Easily search for your desired city, apply a `timezone filter`, and sort the city list by clicking on column headers such as `City Name` or `Population`.
+- **Current Weather:** View the current weather conditions of a specific city by clicking on it, which will redirect you to a new page displaying the current weather.
+- **Integrated Map:** `Google Map` is integrated to view your desired city on a map for better visualization
+- **Forecast Weather:** Get a forecast of the weather for the next 5 days with a three-hour interval forecast for your chosen city.
+- **Responsive Design:** The application is meticulously designed to ensure seamless performance across various devices.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Technologies Used
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Main Libraries and Frameworks
+- **React:** A JavaScript library for building user interfaces.
+- **TypeScript:** A superset of JavaScript that adds static typing.
+- **Next.js:** A React framework for building server-side rendered and static web applications.
+- **Tailwind CSS:** A utility-first CSS framework for quickly building custom designs.
+- **Redux:** A predictable state container for JavaScript apps.
 
-## Learn More
+### Additional Packages
+- **tanstack/react-table:** A lightweight and extensible table component for React.
+- **Lucide Icons:** A set of beautiful open-source icons.
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Screenshots
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+![image](https://github.com/surajaswal29/weather-forecast-next/assets/87890258/b9562966-7342-4502-812e-a8ea0e74a569)
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+![image](https://github.com/surajaswal29/weather-forecast-next/assets/87890258/5274b381-d791-49a3-bbee-103419503d23)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
