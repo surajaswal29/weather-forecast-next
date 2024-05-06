@@ -53,6 +53,7 @@ const DataTable: React.FC<{ type: string }> = ({ type }) => {
     error,
     currentPage,
     totalItems,
+    searchTerm,
     timeZone,
     pageLimit,
     theme,
@@ -229,7 +230,7 @@ const DataTable: React.FC<{ type: string }> = ({ type }) => {
           page: 1,
           limit: 20,
           timezone: value,
-          searchTerm: searchData,
+          searchTerm: searchTerm,
           order: order,
         })
       )
@@ -311,9 +312,9 @@ const DataTable: React.FC<{ type: string }> = ({ type }) => {
         page: currentPage,
         limit: pageLimit,
         timezone: timeZone,
-        searchTerm: searchData,
+        searchTerm: searchTerm,
         order: `ascii_name%20${
-          order.split("%20")[1] === "ASC" ? "DESC" : "ASC"
+          order && order.split("%20")[1] === "ASC" ? "DESC" : "ASC"
         }`,
       }
       dispatch(fetchGeonameData(nextArg))

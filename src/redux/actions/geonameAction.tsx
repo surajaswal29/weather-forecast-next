@@ -12,6 +12,7 @@ type argProps = {
 export const fetchGeonameData = createAsyncThunk(
   "fetchGeonameData",
   async (arg: argProps) => {
+    console.log(arg)
     // console.log("fetching data")
     // console.log(process.env.NEXT_PUBLIC_GEONAME_API_URL)
     if (process.env.NEXT_PUBLIC_GEONAME_API_URL) {
@@ -21,10 +22,11 @@ export const fetchGeonameData = createAsyncThunk(
         apiURI = `${process.env.NEXT_PUBLIC_GEONAME_API_URL}?where=ascii_name%20like%20%22${arg.searchTerm}%22`
       } else {
         apiURI = `${process.env.NEXT_PUBLIC_GEONAME_API_URL}?limit=${arg.limit}&offset=${arg.page}&refine=timezone:${arg.timezone}`
+      }
 
-        if (arg.order) {
-          apiURI = apiURI.replace("?", `?&order_by=${arg.order}&`)
-        }
+      if (arg.order) {
+        console.log(arg.order)
+        apiURI = apiURI.replace("?", `?&order_by=${arg.order}&`)
       }
 
       console.log(apiURI)

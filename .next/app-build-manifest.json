@@ -17,7 +17,7 @@
       "static/chunks/417-948c996e4491f19c.js",
       "static/chunks/475-63fdd1e77230006c.js",
       "static/chunks/648-094f7fbf8c401b64.js",
-      "static/chunks/app/layout-b77e649277b73aae.js"
+      "static/chunks/app/layout-500640dec34184e7.js"
     ],
     "/loading": [
       "static/chunks/webpack-08ffd39a71a09487.js",
@@ -34,18 +34,8 @@
       "static/chunks/417-948c996e4491f19c.js",
       "static/chunks/475-63fdd1e77230006c.js",
       "static/chunks/580-726cba04979df6f6.js",
-      "static/chunks/203-42e3be735bb60edd.js",
+      "static/chunks/203-07340c10e52fc2fd.js",
       "static/chunks/app/page-8aeb8904e7ff7bdc.js"
-    ],
-    "/weather/[city]/page": [
-      "static/chunks/webpack-08ffd39a71a09487.js",
-      "static/chunks/fd9d1056-f99c90db2fba7e0f.js",
-      "static/chunks/23-7937538a21665c60.js",
-      "static/chunks/main-app-ac64cb7ab6506828.js",
-      "static/chunks/417-948c996e4491f19c.js",
-      "static/chunks/648-094f7fbf8c401b64.js",
-      "static/chunks/46-b1fe93a746f04f3e.js",
-      "static/chunks/app/weather/[city]/page-6ba8e0cd2f5d77c4.js"
     ],
     "/favorites/page": [
       "static/chunks/webpack-08ffd39a71a09487.js",
@@ -55,8 +45,18 @@
       "static/chunks/417-948c996e4491f19c.js",
       "static/chunks/475-63fdd1e77230006c.js",
       "static/chunks/580-726cba04979df6f6.js",
-      "static/chunks/203-42e3be735bb60edd.js",
+      "static/chunks/203-07340c10e52fc2fd.js",
       "static/chunks/app/favorites/page-efbfc8b9d0c3c4a0.js"
+    ],
+    "/weather/[city]/page": [
+      "static/chunks/webpack-08ffd39a71a09487.js",
+      "static/chunks/fd9d1056-f99c90db2fba7e0f.js",
+      "static/chunks/23-7937538a21665c60.js",
+      "static/chunks/main-app-ac64cb7ab6506828.js",
+      "static/chunks/417-948c996e4491f19c.js",
+      "static/chunks/648-094f7fbf8c401b64.js",
+      "static/chunks/46-b1fe93a746f04f3e.js",
+      "static/chunks/app/weather/[city]/page-d0bf6c7e475caeca.js"
     ]
   }
 }
