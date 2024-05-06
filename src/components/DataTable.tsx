@@ -3,9 +3,6 @@ import {
   useReactTable,
   getCoreRowModel,
   flexRender,
-  getSortedRowModel,
-  SortingState,
-  sortingFns,
 } from "@tanstack/react-table"
 
 import {
@@ -70,13 +67,13 @@ const DataTable: React.FC<{ type: string }> = ({ type }) => {
       header: "City Name",
       size: 200,
       cell: (props: any) => {
-        //console.log(props.row)
+        ////console.log(props.row)
         const { coordinates } = props.row.original
         const latitude = coordinates ? coordinates.lat : null
         const longitude = coordinates ? coordinates.lon : null
 
-        // console.log(coordinates)
-        // console.log(props)
+        // //console.log(coordinates)
+        // //console.log(props)
         return (
           <div className='w-full'>
             <Link
@@ -256,7 +253,7 @@ const DataTable: React.FC<{ type: string }> = ({ type }) => {
       }
     }
 
-    //console.log("only i am calling")
+    ////console.log("only i am calling")
   }
 
   const handleAddToFav = (props: any) => {
@@ -372,7 +369,7 @@ const DataTable: React.FC<{ type: string }> = ({ type }) => {
           dispatch(fetchGeonameData(nextArg))
           // dispatch(setCitiesData([...mergeCitiesData, ...citiesData]))
 
-          //console.log("I've been called")
+          ////console.log("I've been called")
 
           // setCityData((prev) => [...prev, ...citiesData])
         }
@@ -403,11 +400,6 @@ const DataTable: React.FC<{ type: string }> = ({ type }) => {
 
   const renderHistory = (d: any) => {
     const historyData = JSON.parse(localStorage.getItem("history")!)
-
-    console.log({
-      d: d.split(" ").join("%20").toLowerCase(),
-      historyData: historyData[1].city.toLowerCase(),
-    })
 
     if (historyData && historyData.length > 0) {
       return historyData.find(
@@ -501,9 +493,9 @@ const DataTable: React.FC<{ type: string }> = ({ type }) => {
                     {header.isPlaceholder ? null : (
                       <div
                         className={"select-none flex items-center gap-1"}
-                        onClick={() =>
-                          console.log(header.column.columnDef.header)
-                        }
+                        // onClick={() =>
+                        //   //console.log(header.column.columnDef.header)
+                        // }
                       >
                         {flexRender(
                           header.column.columnDef.header,
@@ -550,7 +542,7 @@ const DataTable: React.FC<{ type: string }> = ({ type }) => {
                     style={{
                       maxWidth: cell.column.getSize(),
                     }}
-                    onClick={() => console.log(cell.column)}
+                    // onClick={() => //console.log(cell.column)}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     {cell.column.id === "ascii_name" &&
