@@ -2,13 +2,9 @@
 
 import DataTable from "@/components/DataTable"
 import { useAppDispatch, useAppSelector } from "@/hooks/useTypedRedux"
-import {
-  setFavCityData,
-  setTheme,
-  setTimeZone,
-} from "@/redux/reducers/geonameSlice"
+import { setFavCityData, setTheme } from "@/redux/reducers/geonameSlice"
+import { Heart } from "lucide-react"
 import { useEffect } from "react"
-
 const Home = () => {
   const dispatch = useAppDispatch()
   const { theme } = useAppSelector((state) => state.cities)
@@ -16,17 +12,12 @@ const Home = () => {
   useEffect(() => {
     const currentTheme = localStorage.getItem("theme")
     const favCityData = JSON.parse(localStorage.getItem("favCity") || "[]")
-    const timezone = localStorage.getItem("timezone")
     if (currentTheme) {
       dispatch(setTheme(currentTheme))
     }
 
     if (favCityData?.length > 0) {
       dispatch(setFavCityData(favCityData))
-    }
-
-    if (timezone) {
-      dispatch(setTimeZone(timezone))
     }
   }, []) //
   return (
@@ -38,8 +29,18 @@ const Home = () => {
       }`}
     >
       <div className='w-full px-4 md:px-8 lg:px-24 xl:px-36 py-10'>
+        <div
+          className={`w-full my-6 border border-slate-400 ${
+            theme === "light" ? "bg-slate-200" : "bg-slate-700"
+          } rounded-lg p-3`}
+        >
+          <h1 className='text-xl flex items-center gap-3'>
+            <Heart />
+            My Favorites cities
+          </h1>
+        </div>
         <div className='w-full mt-6'>
-          <DataTable type={"all"} />
+          <DataTable type='fav' />
         </div>
       </div>
     </div>

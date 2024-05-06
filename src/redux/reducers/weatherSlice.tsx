@@ -9,6 +9,8 @@ const initialState = {
   loading: false,
   currentWeather: null,
   foreCastWeather: [],
+  maxTempCity: null,
+  minTempCity: null,
   foreCastError: null,
   error: null,
 } as WeatherSliceType
@@ -18,7 +20,15 @@ type PayloadType = any
 const weatherSlice = createSlice({
   name: "weather",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    setTempCity: (state, action) => {
+      return {
+        ...state,
+        maxTempCity: action.payload.max,
+        minTempCity: action.payload.min,
+      }
+    },
+  },
   extraReducers(builder) {
     builder.addCase(fetchCurrentWeatherData.pending, (state) => {
       state.loading = true
@@ -63,5 +73,5 @@ const weatherSlice = createSlice({
   },
 })
 
-// export const {weatherActions} = weatherSlice.actions;
+export const { setTempCity } = weatherSlice.actions
 export default weatherSlice.reducer

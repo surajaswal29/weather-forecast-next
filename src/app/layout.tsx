@@ -3,6 +3,8 @@ import { Roboto } from "next/font/google"
 import "@/styles/globals.css"
 import StoreProvider from "./storeProvider"
 import Navbar from "@/components/Navbar"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 const roboto = Roboto({
   subsets: ["cyrillic"],
@@ -18,14 +20,24 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang='en'>
-      <body className={`bg-slate-100 ${roboto.className}`}>
+    <html lang={"en"}>
+      <body className={`${roboto.className}`}>
         <StoreProvider>
-          
-            <Navbar theme='light' />
-            {children}
-          
+          <Navbar />
+          {children}
         </StoreProvider>
+        <ToastContainer
+          position='top-right'
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme='light'
+        />
       </body>
     </html>
   )

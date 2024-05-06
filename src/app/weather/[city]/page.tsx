@@ -6,6 +6,8 @@ import {
   fetchCurrentWeatherData,
   fetchForecastWeatherData,
 } from "@/redux/actions/weatherAction"
+import { setFavCityData, setTheme } from "@/redux/reducers/geonameSlice"
+import { setTempCity } from "@/redux/reducers/weatherSlice"
 import {
   ArrowDown,
   ArrowLeftRight,
@@ -76,6 +78,7 @@ const CityPage: React.FC<Props> = ({ params }) => {
 
   // redux
   const dispatch = useAppDispatch()
+  const { theme } = useAppSelector((state) => state.cities)
   const { loading, currentWeather, error, foreCastWeather, foreCastError } =
     useAppSelector((state) => state.weather)
 
@@ -91,7 +94,34 @@ const CityPage: React.FC<Props> = ({ params }) => {
   useEffect(() => {
     console.log(currentWeather)
     console.log(foreCastWeather)
-  }, [currentWeather, foreCastWeather])
+    if (currentWeather) {
+      dispatch(
+        setTempCity({
+          max: currentWeather.main.temp_max,
+          min: currentWeather.main.temp_min,
+        })
+      )
+      const cityData = {
+        city: params.city,
+        maxTemp: currentWeather.main.temp_max,
+        minTemp: currentWeather.main.temp_min,
+      }
+
+      let historyData = JSON.parse(localStorage.getItem("history")!)
+      if (historyData && historyData.length > 0) {
+        const isExist = historyData.find(
+          (item: any) => item.city === params.city
+        )
+        if (!isExist) {
+          historyData.push(cityData)
+        }
+      } else {
+        historyData = [cityData]
+      }
+
+      localStorage.setItem("history", JSON.stringify(historyData))
+    }
+  }, [currentWeather, dispatch, foreCastWeather])
 
   const convertTimestampToDate = (timestamp: number) => {
     const date = new Date(timestamp * 1000)
@@ -125,25 +155,44 @@ const CityPage: React.FC<Props> = ({ params }) => {
     return directions[index]
   }
 
+  useEffect(() => {
+    const currentTheme = localStorage.getItem("theme")
+    const favCityData = JSON.parse(localStorage.getItem("favCity") || "[]")
+    if (currentTheme) {
+      dispatch(setTheme(currentTheme))
+    }
+
+    if (favCityData?.length > 0) {
+      dispatch(setFavCityData(favCityData))
+    }
+  }, []) //
+
   if (loading || !foreCastWeather) {
-    return <div>Loading...</div>
+    return (
+      <div className='w-full h-screen flex items-center justify-center text-blue-500 bg-slate-300'>
+        Loading...
+      </div>
+    )
   }
   return (
-    <div className='w-full px-4 md:px-12 lg:px-16 xl:px-24'>
-      <Suspense fallback={<div>Loading...</div>}>
-        {/* <div className='w-full my-6'>
-        <button
-          type='button'
-          className='flex items-center gap-1 bg-blue-200 rounded-full p-2 text-xs px-3'
-          onClick={() => {
-            router.back()
-          }}
-        >
-          <MoveLeft size={16} /> back
-        </button>
-      </div> */}
-        <div className='w-full flex flex-col-reverse lg:flex-row gap-6 mt-8'>
-          <div className='w-full bg-white p-3 rounded-xl'>
+    <Suspense
+      fallback={
+        <div className='w-full h-screen flex items-center justify-center text-blue-500 bg-slate-300'>
+          Loading...
+        </div>
+      }
+    >
+      <div
+        className={`w-full px-4 md:px-12 md:py-8 lg:px-16 lg:py-12 xl:px-24 xl:py-16 ${
+          theme === "light" ? "bg-slate-100" : "bg-slate-900"
+        }`}
+      >
+        <div className='w-full flex flex-col-reverse lg:flex-row gap-6'>
+          <div
+            className={`w-full ${
+              theme === "light" ? "bg-white" : "bg-slate-800"
+            } p-3 rounded-xl`}
+          >
             <div className='w-full flex flex-col lg:flex-row gap-4'>
               {/* City Name & Temprature */}
               <div className='flex-1 flex bg-blue-500 rounded-lg p-3 text-white '>
@@ -279,14 +328,22 @@ const CityPage: React.FC<Props> = ({ params }) => {
             </div>
           </div>
 
-          <div className='w-full bg-white p-3 rounded-xl'>
+          <div
+            className={`w-full ${
+              theme === "light" ? "bg-white" : "bg-slate-800"
+            } p-3 rounded-xl`}
+          >
             <Map coords={coordinates} />
           </div>
         </div>
 
         <div className='w-full my-6'>
           <div className='w-full p-3 rounded-xl'>
-            <h1 className='text-2xl font-bold mb-4'>
+            <h1
+              className={`text-2xl font-bold mb-4 ${
+                theme === "light" ? "text-black" : "text-white"
+              }`}
+            >
               5 Days Weather Forecast for {decodeURIComponent(params.city)}
             </h1>
           </div>
@@ -314,8 +371,14 @@ const CityPage: React.FC<Props> = ({ params }) => {
             ))}
           </div>
           {activeDate.date && (
-            <div className='w-full rounded-xl bg-white mt-4 overflow-auto'>
-              <table className='w-full border'>
+            <div
+              className={`w-full rounded-xl border ${
+                theme === "light"
+                  ? "bg-white text-black"
+                  : "bg-slate-800 text-white"
+              } mt-4 overflow-auto`}
+            >
+              <table className='w-full border-transparent'>
                 <thead>
                   <tr className='w-full border bg-slate-800 text-white'>
                     {FORECAST_CONST.map((item, index) => (
@@ -346,9 +409,15 @@ const CityPage: React.FC<Props> = ({ params }) => {
                             width={40}
                             height={40}
                           />
-                          <div className='flex flex-col'>
+                          <div className='flex flex-col items-start'>
                             <p>{d.weather[0].main}</p>
-                            <p className='text-xs text-gray-700'>
+                            <p
+                              className={`text-xs ${
+                                theme === "light"
+                                  ? "text-gray-700"
+                                  : "text-gray-300"
+                              }`}
+                            >
                               {d.weather[0].description}
                             </p>
                           </div>
@@ -376,8 +445,8 @@ const CityPage: React.FC<Props> = ({ params }) => {
             </div>
           )}
         </div>
-      </Suspense>
-    </div>
+      </div>
+    </Suspense>
   )
 }
 

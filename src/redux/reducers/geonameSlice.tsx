@@ -13,19 +13,23 @@ const initialState = {
   timeZone: "",
   pageLimit: 20,
   searchTerm: "",
+  order: "ascii_name%20ASC",
+  orderField: "City Name",
+  theme: "light",
+  favCityData: [],
 } as GeonameType
 
 const removeDuplicate = (arr: any[]) => {
   console.log(arr)
   let uniqueIds = new Set()
   let uniqueArr = []
-  for (let i = 0; i < arr.length; i++) { 
+  for (let i = 0; i < arr.length; i++) {
     if (!uniqueIds.has(arr[i].geoname_id)) {
       uniqueIds.add(arr[i].geoname_id)
       uniqueArr.push(arr[i])
     }
   }
-  console.log(uniqueArr);
+  console.log(uniqueArr)
 
   return uniqueArr
 }
@@ -35,9 +39,30 @@ const citiesSlice = createSlice({
   initialState,
   reducers: {
     setCitiesData: (state, action) => {
-      console.log(action.payload)
-      state.totalMergeCount = action.payload.length
-      state.mergeCitiesData = action.payload
+      return {
+        ...state,
+        totalMergeCount: action.payload.length,
+        mergeCitiesData: action.payload,
+      }
+    },
+    setTheme: (state, action) => {
+      localStorage.setItem("theme", action.payload)
+      return {
+        ...state,
+        theme: action.payload,
+      }
+    },
+    setFavCityData: (state, action) => {
+      return {
+        ...state,
+        favCityData: action.payload,
+      }
+    },
+    setTimeZone: (state, action) => {
+      return {
+        ...state,
+        timeZone: action.payload,
+      }
     },
   },
   extraReducers: (builder) => {
@@ -47,7 +72,6 @@ const citiesSlice = createSlice({
     builder.addCase(
       fetchGeonameData.fulfilled.type,
       (state, action: PayloadAction<GeonamePayload>) => {
-        
         state.loading = false
         state.citiesData = action.payload?.data
         state.totalMergeCount = state.mergeCitiesData.length
@@ -59,6 +83,8 @@ const citiesSlice = createSlice({
         state.pageLimit = action.payload?.pageLimit
         state.currentPage = action.payload?.currentPage
         state.searchTerm = action.payload?.searchTerm
+        state.order = action.payload?.order
+        state.orderField = action.payload?.orderField
         state.error = null
       }
     )
@@ -70,5 +96,6 @@ const citiesSlice = createSlice({
   },
 })
 
-export const { setCitiesData } = citiesSlice.actions
+export const { setCitiesData, setTheme, setFavCityData, setTimeZone } =
+  citiesSlice.actions
 export default citiesSlice.reducer
